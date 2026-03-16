@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>棚卸商品管理 - ラクミー経営管理</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: #f5f6f8;
+    min-height: 100vh;
+    color: #333;
+  }
+
+  /* ===== Header ===== */
+  .global-header {
+    background: #fff;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    border-bottom: 1px solid #e8e8e8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #333;
+  }
+  .logo-badge {
+    background: linear-gradient(135deg, #43c6ac, #36d98a);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .shop-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    background: #fff;
+  }
+  .shop-selector .shop-icon {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #43c6ac, #36d98a);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+  }
+  .header-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .header-icon:hover { background: #e8e8e8; }
+
+  /* ===== Page ===== */
+  .page { padding: 24px 32px; max-width: 1200px; margin: 0 auto; }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .page-title-area { display: flex; align-items: baseline; gap: 16px; }
+  .page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+  }
+  .breadcrumb {
+    font-size: 12px;
+    color: #999;
+  }
+  .breadcrumb a { color: #999; text-decoration: none; }
+  .breadcrumb a:hover { color: #666; text-decoration: underline; }
+
+  /* ===== Card ===== */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  /* ===== Toolbar ===== */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 12px;
+    width: 240px;
+    background: #fff;
+  }
+  .search-box .search-icon { color: #bbb; font-size: 14px; }
+  .search-box input {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    width: 100%;
+    color: #333;
+  }
+  .search-box input::placeholder { color: #ccc; }
+
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #666;
+  }
+  .filter-group label { white-space: nowrap; }
+
+  /* Radio buttons */
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #555;
+  }
+  .radio-option input[type="radio"] { display: none; }
+  .radio-dot {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .radio-dot::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .radio-option input[type="radio"]:checked + .radio-dot {
+    border-color: #43c6ac;
+    background: #43c6ac;
+  }
+  .radio-option input[type="radio"]:checked + .radio-dot::after {
+    background: #fff;
+  }
+
+  /* Select dropdown */
+  .filter-select {
+    padding: 6px 28px 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 13px;
+    color: #333;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 10px center;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  /* ===== Table ===== */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #666;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    background: #fafbfc;
+  }
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+  tbody tr:hover { background: #f8fffe; }
+  tbody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+  }
+  .drag-handle {
+    color: #ccc;
+    font-size: 16px;
+    cursor: grab;
+    user-select: none;
+    letter-spacing: 1px;
+  }
+  .product-name {
+    font-weight: 500;
+    color: #222;
+    max-width: 340px;
+  }
+  .product-code {
+    color: #999;
+    font-size: 12px;
+  }
+
+  /* Registration route badge */
+  .route-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .route-badge.order {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .route-badge.delivery {
+    background: #fff3e0;
+    color: #e65100;
+  }
+  .route-badge.in-house {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 48px;
+    text-align: center;
+  }
+  .status-badge.on {
+    background: #e0f7ee;
+    color: #1db373;
+  }
+  .status-badge.off {
+    background: #f5f5f5;
+    color: #999;
+  }
+
+  /* Action buttons */
+  .action-btn {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .action-btn:hover { opacity: 0.8; }
+  .action-btn.data {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+  .action-btn.edit {
+    background: #e0f7ee;
+    color: #1db373;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* ===== Pagination ===== */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    gap: 4px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .page-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fff;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s;
+  }
+  .page-btn:hover { background: #f5f5f5; }
+  .page-btn.active {
+    background: #43c6ac;
+    color: #fff;
+    border-color: #43c6ac;
+  }
+  .page-btn.disabled {
+    color: #ccc;
+    cursor: default;
+    pointer-events: none;
+  }
+  .page-info {
+    font-size: 12px;
+    color: #999;
+    margin-left: 16px;
+  }
+
+  /* ===== Detail View (modal-like slide panel) ===== */
+  .detail-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 200;
+    display: none;
+    justify-content: flex-end;
+  }
+  .detail-overlay.open { display: flex; }
+  .detail-panel {
+    width: 720px;
+    max-width: 90vw;
+    background: #f5f6f8;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  .detail-header {
+    background: #fff;
+    padding: 20px 28px;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .detail-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+  }
+  .detail-header .breadcrumb { margin-top: 4px; }
+  .detail-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .detail-close:hover { background: #e0e0e0; }
+  .detail-body { padding: 24px 28px; }
+
+  .detail-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .detail-section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .detail-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #f8f8f8;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label {
+    width: 160px;
+    font-size: 13px;
+    color: #888;
+    flex-shrink: 0;
+  }
+  .detail-value {
+    font-size: 13px;
+    color: #222;
+    font-weight: 500;
+  }
+  .detail-value .sub {
+    font-size: 11px;
+    color: #999;
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .detail-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .history-table th {
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #888;
+    font-size: 11px;
+    border-bottom: 1px solid #eee;
+    background: #fafbfc;
+  }
+  .history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #333;
+  }
+
+  /* Toggle switch */
+  .toggle {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    display: inline-block;
+  }
+  .toggle input { display: none; }
+  .toggle-slider {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #ddd;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-slider::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle input:checked + .toggle-slider {
+    background: #43c6ac;
+  }
+  .toggle input:checked + .toggle-slider::after {
+    left: 23px;
+  }
+
+  /* Bulk action bar */
+  .bulk-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background: #e8f9f4;
+    border-bottom: 1px solid #c8efe3;
+  }
+  .bulk-bar.show { display: flex; }
+  .bulk-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #333;
+  }
+  .bulk-bar-right {
+    display: flex;
+    gap: 8px;
+  }
+  .bulk-btn {
+    padding: 6px 16px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+  .bulk-btn:hover { opacity: 0.85; }
+  .bulk-btn.on {
+    background: #43c6ac;
+    color: #fff;
+  }
+  .bulk-btn.off {
+    background: #fff;
+    color: #666;
+    border: 1px solid #ddd;
+  }
+
+  /* Checkbox */
+  .checkbox-cell {
+    width: 40px;
+  }
+  .custom-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s;
+  }
+  .custom-checkbox.checked {
+    background: #43c6ac;
+    border-color: #43c6ac;
+  }
+  .custom-checkbox.checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* Count badge */
+  .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #43c6ac;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+  }
+
+  /* Summary row */
+  .summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background: #fafbfc;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+    color: #888;
+  }
+  .summary-stats {
+    display: flex;
+    gap: 20px;
+  }
+  .summary-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-stat strong {
+    color: #333;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Global Header ===== -->
+<div class="global-header">
+  <div style="display:flex;align-items:center;gap:20px;">
+    <div class="logo">
+      <span class="logo-badge">ラクミー</span>
+      <span>経営管理</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="shop-selector">
+      <div class="shop-icon">🏪</div>
+      <span>なかめのてっぺん 渋谷ストリーム</span>
+      <span style="color:#bbb;">▼</span>
+    </div>
+    <div class="header-icon">?</div>
+    <div class="header-icon">👤</div>
+    <div class="header-icon">☰</div>
+  </div>
+</div>
+
+<!-- ===== Page Content ===== -->
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-area">
+      <h1 class="page-title">棚卸商品管理</h1>
+      <div class="breadcrumb">
+        <a href="#">棚卸管理</a> ＞ 棚卸商品管理
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="card">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="商品名で検索" id="searchInput">
+        </div>
+        <div class="filter-group">
+          <label>登録経路：</label>
+          <select class="filter-select" id="routeFilter">
+            <option value="all">すべて</option>
+            <option value="order">発注アプリ</option>
+            <option value="delivery">納品書書き起こし</option>
+            <option value="in-house">自社加工品</option>
+          </select>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="filter-group">
+          <label>棚卸ステータス：</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="inventoryStatus" value="all" checked>
+              <span class="radio-dot"></span>
+              すべて
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="inventoryStatus" value="on">
+              <span class="radio-dot"></span>
+              表示
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="inventoryStatus" value="off">
+              <span class="radio-dot"></span>
+              非表示
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Action Bar -->
+    <div class="bulk-bar" id="bulkBar">
+      <div class="bulk-bar-left">
+        <span id="selectedCount">0</span>件選択中
+      </div>
+      <div class="bulk-bar-right">
+        <button class="bulk-btn on" onclick="bulkSetStatus(true)">一括：表示にする</button>
+        <button class="bulk-btn off" onclick="bulkSetStatus(false)">一括：非表示にする</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-row">
+      <div class="summary-stats">
+        <div class="summary-stat">全 <strong id="totalCount">24</strong> 件</div>
+        <div class="summary-stat">棚卸表示 <strong id="onCount" style="color:#1db373;">18</strong> 件</div>
+        <div class="summary-stat">棚卸非表示 <strong id="offCount" style="color:#999;">6</strong> 件</div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="checkbox-cell">
+              <div class="custom-checkbox" id="selectAll" onclick="toggleSelectAll()"></div>
+            </th>
+            <th></th>
+            <th>商品名</th>
+            <th>商品コード</th>
+            <th>登録経路</th>
+            <th>発注先</th>
+            <th>棚卸</th>
+            <th>単位</th>
+            <th>棚卸推奨単価</th>
+            <th>アクション</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="page-btn disabled">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">›</button>
+      <span class="page-info">全24件中 1-10件表示</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Detail Panel ===== -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
+  <div class="detail-panel" onclick="event.stopPropagation()">
+    <div class="detail-header">
+      <div>
+        <h2 id="detailTitle">棚卸商品データ</h2>
+        <div class="breadcrumb" id="detailBreadcrumb">
+          棚卸管理 ＞ 棚卸商品管理 ＞ 商品名
+        </div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()">&times;</button>
+    </div>
+    <div class="detail-body">
+
+      <!-- 商品データ -->
+      <div class="detail-section">
+        <h3>商品データ</h3>
+        <div class="detail-row">
+          <div class="detail-label">商品名</div>
+          <div class="detail-value" id="detailName">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">商品コード</div>
+          <div class="detail-value" id="detailCode">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">登録経路</div>
+          <div class="detail-value" id="detailRoute">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">発注先</div>
+          <div class="detail-value" id="detailSupplier">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">棚卸ステータス</div>
+          <div class="detail-value">
+            <label class="toggle">
+              <input type="checkbox" id="detailToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">単位</div>
+          <div class="detail-value" id="detailUnit">個</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">税区分</div>
+          <div class="detail-value" id="detailTax">外税（標準税率）</div>
+        </div>
+      </div>
+
+      <!-- 棚卸し参考データ -->
+      <div class="detail-section">
+        <h3>棚卸し参考データ</h3>
+        <div class="detail-row">
+          <div class="detail-label">棚卸し推奨単価</div>
+          <div class="detail-value">
+            <span id="detailPrice">320円</span>
+            <span class="sub">直近の棚卸データ（2026年2月28日）での単価です。</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 棚卸し履歴 & 納品書書き起こし履歴 -->
+      <div class="detail-columns">
+        <div class="detail-section">
+          <h3>棚卸し履歴</h3>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>実施日</th>
+                <th>在庫数量</th>
+                <th>商品単価</th>
+                <th>小計</th>
+              </tr>
+            </thead>
+            <tbody id="detailInventoryHistory">
+              <tr>
+                <td>2026-02-28</td>
+                <td>3.0</td>
+                <td>320円</td>
+                <td>960円</td>
+              </tr>
+              <tr>
+                <td>2026-01-31</td>
+                <td>5.0</td>
+                <td>310円</td>
+                <td>1,550円</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="detail-section">
+          <h3>納品書の書き起こし履歴</h3>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>納品日</th>
+                <th>数量</th>
+                <th>納品単価</th>
+                <th>小計（税別）</th>
+              </tr>
+            </thead>
+            <tbody id="detailDeliveryHistory">
+              <tr>
+                <td>2026-02-25</td>
+                <td>10</td>
+                <td>300円</td>
+                <td>3,000円</td>
+              </tr>
+              <tr>
+                <td>2026-02-10</td>
+                <td>8</td>
+                <td>310円</td>
+                <td>2,480円</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Mock Data =====
+const products = [
+  { id: 1,  name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 2,  name: '（自社加工品）[キッチン冷蔵庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 3,  name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 4800 },
+  { id: 4,  name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 680 },
+  { id: 5,  name: '（自社加工品）[炉端]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 6,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 3200 },
+  { id: 7,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 1800 },
+  { id: 8,  name: '（自社加工品）[調味料]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 9,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'order', supplier: 'カクヤス', inventoryOn: true, unit: '樽', price: 12000 },
+  { id: 10, name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', price: 2800 },
+  { id: 11, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', price: 1200 },
+  { id: 12, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', price: 850 },
+  { id: 13, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 3400 },
+  { id: 14, name: '（自社加工品）[4面冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', price: 0 },
+  { id: 15, name: '鶏もも肉 2kg', code: 'MET-003', route: 'order', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', price: 1600 },
+  { id: 16, name: '豚バラ肉 1kg', code: 'MET-007', route: 'delivery', supplier: '-', inventoryOn: false, unit: 'パック', price: 1200 },
+  { id: 17, name: '（自社加工品）[キッチン冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 18, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', price: 250 },
+  { id: 19, name: '（自社加工品）[B2倉庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 20, name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', price: 2200 },
+  { id: 21, name: '（自社加工品）[刺身場]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
+  { id: 22, name: 'にんじん 5kg', code: 'VEG-022', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 900 },
+  { id: 23, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: '個', price: 580 },
+  { id: 24, name: '（自社加工品）[いまでや]_[飲料]_[202601]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', price: 0 },
+];
+
+const routeLabels = {
+  'order': '発注アプリ',
+  'delivery': '納品書書き起こし',
+  'in-house': '自社加工品'
+};
+
+let selectedIds = new Set();
+
+function renderTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const routeFilter = document.getElementById('routeFilter').value;
+  const statusFilter = document.querySelector('input[name="inventoryStatus"]:checked').value;
+
+  let filtered = products.filter(p => {
+    if (search && !p.name.toLowerCase().includes(search)) return false;
+    if (routeFilter !== 'all' && p.route !== routeFilter) return false;
+    if (statusFilter === 'on' && !p.inventoryOn) return false;
+    if (statusFilter === 'off' && p.inventoryOn) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('productTableBody');
+  tbody.innerHTML = filtered.map(p => `
+    <tr onclick="openDetail(${p.id})">
+      <td class="checkbox-cell" onclick="event.stopPropagation()">
+        <div class="custom-checkbox ${selectedIds.has(p.id) ? 'checked' : ''}"
+             onclick="toggleSelect(${p.id}, this)"></div>
+      </td>
+      <td><span class="drag-handle">:::</span></td>
+      <td class="product-name">${p.name}</td>
+      <td class="product-code">${p.code || '-'}</td>
+      <td><span class="route-badge ${p.route}">${routeLabels[p.route]}</span></td>
+      <td style="font-size:12px;color:#666;">${p.supplier}</td>
+      <td><span class="status-badge ${p.inventoryOn ? 'on' : 'off'}">${p.inventoryOn ? '表示' : '非表示'}</span></td>
+      <td style="color:#666;">${p.unit}</td>
+      <td style="color:#666;">${p.price > 0 ? p.price.toLocaleString() + '円' : '-'}</td>
+      <td>
+        <div class="actions-cell" onclick="event.stopPropagation()">
+          <a class="action-btn data" href="#" onclick="openDetail(${p.id});return false;">データ</a>
+          <a class="action-btn edit" href="#" onclick="return false;">編集</a>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  // Update counts
+  const onCount = products.filter(p => p.inventoryOn).length;
+  const offCount = products.filter(p => !p.inventoryOn).length;
+  document.getElementById('totalCount').textContent = products.length;
+  document.getElementById('onCount').textContent = onCount;
+  document.getElementById('offCount').textContent = offCount;
+
+  updateBulkBar();
+}
+
+function toggleSelect(id, el) {
+  if (selectedIds.has(id)) {
+    selectedIds.delete(id);
+    el.classList.remove('checked');
+  } else {
+    selectedIds.add(id);
+    el.classList.add('checked');
+  }
+  updateBulkBar();
+}
+
+function toggleSelectAll() {
+  const el = document.getElementById('selectAll');
+  const allCheckboxes = document.querySelectorAll('#productTableBody .custom-checkbox');
+  if (el.classList.contains('checked')) {
+    el.classList.remove('checked');
+    selectedIds.clear();
+    allCheckboxes.forEach(c => c.classList.remove('checked'));
+  } else {
+    el.classList.add('checked');
+    products.forEach(p => selectedIds.add(p.id));
+    allCheckboxes.forEach(c => c.classList.add('checked'));
+  }
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulkBar');
+  const count = selectedIds.size;
+  document.getElementById('selectedCount').textContent = count;
+  bar.classList.toggle('show', count > 0);
+}
+
+function bulkSetStatus(on) {
+  selectedIds.forEach(id => {
+    const p = products.find(pp => pp.id === id);
+    if (p) p.inventoryOn = on;
+  });
+  selectedIds.clear();
+  document.getElementById('selectAll').classList.remove('checked');
+  renderTable();
+}
+
+function openDetail(id) {
+  const p = products.find(pp => pp.id === id);
+  if (!p) return;
+  document.getElementById('detailTitle').textContent = '棚卸商品データ';
+  document.getElementById('detailBreadcrumb').textContent = `棚卸管理 ＞ 棚卸商品管理 ＞ ${p.name}`;
+  document.getElementById('detailName').textContent = p.name;
+  document.getElementById('detailCode').textContent = p.code || '-';
+  document.getElementById('detailRoute').innerHTML = `<span class="route-badge ${p.route}">${routeLabels[p.route]}</span>`;
+  document.getElementById('detailSupplier').textContent = p.supplier;
+  document.getElementById('detailToggle').checked = p.inventoryOn;
+  document.getElementById('detailUnit').textContent = p.unit;
+  document.getElementById('detailPrice').textContent = p.price > 0 ? p.price.toLocaleString() + '円' : '0円';
+  document.getElementById('detailOverlay').classList.add('open');
+}
+
+function closeDetail(event) {
+  if (event && event.target !== document.getElementById('detailOverlay')) return;
+  document.getElementById('detailOverlay').classList.remove('open');
+}
+// Also allow no-argument close
+const origClose = closeDetail;
+closeDetail = function(event) {
+  if (!event) {
+    document.getElementById('detailOverlay').classList.remove('open');
+    return;
+  }
+  origClose(event);
+};
+
+// Event listeners
+document.getElementById('searchInput').addEventListener('input', renderTable);
+document.getElementById('routeFilter').addEventListener('change', renderTable);
+document.querySelectorAll('input[name="inventoryStatus"]').forEach(r => {
+  r.addEventListener('change', renderTable);
+});
+
+// Initial render
+renderTable();
+</script>
+
+</body>
+</html>
