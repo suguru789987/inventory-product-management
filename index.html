@@ -86,6 +86,7 @@
 
   /* ===== Page ===== */
   .page { padding: 24px 32px; max-width: 1200px; margin: 0 auto; }
+  .page.hidden { display: none; }
 
   .page-header {
     display: flex;
@@ -247,10 +248,6 @@
     color: #222;
     max-width: 340px;
   }
-  .product-code {
-    color: #999;
-    font-size: 12px;
-  }
 
   /* Registration route badge */
   .route-badge {
@@ -363,129 +360,6 @@
     margin-left: 16px;
   }
 
-  /* ===== Detail View (modal-like slide panel) ===== */
-  .detail-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 200;
-    display: none;
-    justify-content: flex-end;
-  }
-  .detail-overlay.open { display: flex; }
-  .detail-panel {
-    width: 720px;
-    max-width: 90vw;
-    background: #f5f6f8;
-    height: 100vh;
-    overflow-y: auto;
-    box-shadow: -4px 0 24px rgba(0,0,0,0.12);
-    animation: slideIn 0.25s ease;
-  }
-  @keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
-  }
-  .detail-header {
-    background: #fff;
-    padding: 20px 28px;
-    border-bottom: 1px solid #e8e8e8;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .detail-header h2 {
-    font-size: 16px;
-    font-weight: 700;
-    color: #222;
-  }
-  .detail-header .breadcrumb { margin-top: 4px; }
-  .detail-close {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: #f0f0f0;
-    color: #666;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .detail-close:hover { background: #e0e0e0; }
-  .detail-body { padding: 24px 28px; }
-
-  .detail-section {
-    background: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .detail-section h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f0f0f0;
-  }
-
-  .detail-row {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #f8f8f8;
-  }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-label {
-    width: 160px;
-    font-size: 13px;
-    color: #888;
-    flex-shrink: 0;
-  }
-  .detail-value {
-    font-size: 13px;
-    color: #222;
-    font-weight: 500;
-  }
-  .detail-value .sub {
-    font-size: 11px;
-    color: #999;
-    font-weight: 400;
-    display: block;
-    margin-top: 2px;
-  }
-
-  .detail-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .history-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  .history-table th {
-    padding: 8px 10px;
-    text-align: left;
-    font-weight: 600;
-    color: #888;
-    font-size: 11px;
-    border-bottom: 1px solid #eee;
-    background: #fafbfc;
-  }
-  .history-table td {
-    padding: 10px;
-    border-bottom: 1px solid #f5f5f5;
-    color: #333;
-  }
-
   /* Toggle switch */
   .toggle {
     position: relative;
@@ -526,27 +400,12 @@
     align-items: center;
     gap: 10px;
   }
-  .toggle-label {
+  .toggle-status-text {
     font-size: 13px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 4px;
+    font-weight: 500;
   }
-  .toggle-label.on {
-    color: #1db373;
-    background: #e0f7ee;
-  }
-  .toggle-label.off {
-    color: #e53935;
-    background: #ffeaea;
-  }
-  .toggle-description {
-    display: block;
-    font-size: 11px;
-    color: #999;
-    font-weight: 400;
-    margin-top: 6px;
-  }
+  .toggle-status-text.on { color: #1db373; }
+  .toggle-status-text.off { color: #999; }
 
   /* Bulk action bar */
   .bulk-bar {
@@ -590,9 +449,7 @@
   }
 
   /* Checkbox */
-  .checkbox-cell {
-    width: 40px;
-  }
+  .checkbox-cell { width: 40px; }
   .custom-checkbox {
     width: 18px;
     height: 18px;
@@ -609,24 +466,10 @@
     border-color: #43c6ac;
   }
   .custom-checkbox.checked::after {
-    content: '✓';
+    content: '\2713';
     color: #fff;
     font-size: 12px;
     font-weight: 700;
-  }
-
-  /* Count badge */
-  .count-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #43c6ac;
-    color: #fff;
-    border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 11px;
-    font-weight: 700;
-    min-width: 20px;
   }
 
   /* Summary row */
@@ -653,6 +496,218 @@
     color: #333;
     font-size: 14px;
   }
+
+  /* ===== Detail Page (データ) ===== */
+  .detail-page-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .detail-page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #1976d2;
+    text-decoration: none;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  .detail-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px 32px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .detail-section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 20px;
+  }
+
+  .detail-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+    align-items: flex-start;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label {
+    width: 180px;
+    font-size: 13px;
+    color: #888;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .detail-value {
+    font-size: 14px;
+    color: #222;
+    font-weight: 500;
+  }
+  .detail-value .sub {
+    font-size: 12px;
+    color: #999;
+    font-weight: 400;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .detail-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .history-table th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #888;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    background: #fafbfc;
+  }
+  .history-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #333;
+    font-weight: 500;
+  }
+
+  /* ===== Edit Page (編集) ===== */
+  .edit-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 32px 40px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .edit-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .edit-row:last-child { border-bottom: none; }
+  .edit-label {
+    width: 200px;
+    font-size: 14px;
+    color: #555;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .edit-label .required {
+    color: #e53935;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .edit-label .optional {
+    color: #999;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .edit-input {
+    flex: 1;
+  }
+  .edit-input input[type="text"],
+  .edit-input select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .edit-input input[type="text"]:focus,
+  .edit-input select:focus {
+    border-color: #43c6ac;
+  }
+  .edit-input input[type="text"]:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }
+  .edit-input select {
+    appearance: none;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 14px center;
+    padding-right: 36px;
+  }
+
+  .edit-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 40px;
+    background: #fff;
+    border-top: 1px solid #eee;
+    border-radius: 0 0 8px 8px;
+  }
+  .btn-delete {
+    padding: 10px 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #e53935;
+    background: #fff;
+    color: #e53935;
+    transition: all 0.15s;
+  }
+  .btn-delete:hover { background: #ffeaea; }
+  .btn-update {
+    padding: 10px 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: #43c6ac;
+    color: #fff;
+    transition: all 0.15s;
+  }
+  .btn-update:hover { background: #38b89e; }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #333;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 </style>
 </head>
 <body>
@@ -677,10 +732,10 @@
   </div>
 </div>
 
-<!-- ===== Page Content ===== -->
-<div class="page">
-
-  <!-- Page Header -->
+<!-- ========================================== -->
+<!-- PAGE 1: 一覧画面                            -->
+<!-- ========================================== -->
+<div class="page" id="listPage">
   <div class="page-header">
     <div class="page-title-area">
       <h1 class="page-title">棚卸商品管理</h1>
@@ -690,10 +745,7 @@
     </div>
   </div>
 
-  <!-- Main Card -->
   <div class="card">
-
-    <!-- Toolbar -->
     <div class="toolbar">
       <div style="display:flex;align-items:center;gap:16px;">
         <div class="search-box">
@@ -734,7 +786,6 @@
       </div>
     </div>
 
-    <!-- Bulk Action Bar -->
     <div class="bulk-bar" id="bulkBar">
       <div class="bulk-bar-left">
         <span id="selectedCount">0</span>件選択中
@@ -745,7 +796,6 @@
       </div>
     </div>
 
-    <!-- Summary -->
     <div class="summary-row">
       <div class="summary-stats">
         <div class="summary-stat">全 <strong id="totalCount">24</strong> 件</div>
@@ -754,7 +804,6 @@
       </div>
     </div>
 
-    <!-- Table -->
     <div class="table-wrap">
       <table>
         <thead>
@@ -773,180 +822,242 @@
             <th>アクション</th>
           </tr>
         </thead>
-        <tbody id="productTableBody">
-        </tbody>
+        <tbody id="productTableBody"></tbody>
       </table>
     </div>
 
-    <!-- Pagination -->
     <div class="pagination">
-      <button class="page-btn disabled">‹</button>
+      <button class="page-btn disabled">&#8249;</button>
       <button class="page-btn active">1</button>
       <button class="page-btn">2</button>
       <button class="page-btn">3</button>
-      <button class="page-btn">›</button>
+      <button class="page-btn">&#8250;</button>
       <span class="page-info">全24件中 1-10件表示</span>
     </div>
   </div>
 </div>
 
-<!-- ===== Detail Panel ===== -->
-<div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
-  <div class="detail-panel" onclick="event.stopPropagation()">
-    <div class="detail-header">
-      <div>
-        <h2 id="detailTitle">棚卸商品データ</h2>
-        <div class="breadcrumb" id="detailBreadcrumb">
-          棚卸管理 ＞ 棚卸商品管理 ＞ 商品名
-        </div>
-      </div>
-      <button class="detail-close" onclick="closeDetail()">&times;</button>
+<!-- ========================================== -->
+<!-- PAGE 2: データ画面（閲覧）                    -->
+<!-- ========================================== -->
+<div class="page hidden" id="dataPage">
+  <a class="back-link" onclick="showPage('list')">&#8592; 棚卸商品管理に戻る</a>
+  <div class="detail-page-header">
+    <h1 class="detail-page-title">棚卸商品データ</h1>
+    <div class="breadcrumb">
+      <a href="#" onclick="showPage('list')">棚卸管理</a> ＞
+      <a href="#" onclick="showPage('list')">棚卸商品管理</a> ＞
+      <span id="dataBreadcrumbName">商品名</span>
     </div>
-    <div class="detail-body">
+  </div>
 
-      <!-- 商品データ -->
-      <div class="detail-section">
-        <h3>商品データ</h3>
-        <div class="detail-row">
-          <div class="detail-label">商品名</div>
-          <div class="detail-value" id="detailName">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">商品コード</div>
-          <div class="detail-value" id="detailCode">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">登録経路</div>
-          <div class="detail-value" id="detailRoute">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">発注先</div>
-          <div class="detail-value" id="detailSupplier">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">棚卸ステータス</div>
-          <div class="detail-value">
-            <div class="toggle-wrap">
-              <label class="toggle">
-                <input type="checkbox" id="detailToggle" checked onchange="updateToggleLabel()">
-                <span class="toggle-slider"></span>
-              </label>
-              <span class="toggle-label on" id="detailToggleLabel">棚卸対象</span>
-            </div>
-            <span class="toggle-description" id="detailToggleDesc">この商品は棚卸アプリに表示されます</span>
-          </div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">単位</div>
-          <div class="detail-value" id="detailUnit">個</div>
-        </div>
-        <div class="detail-row">
-          <div class="detail-label">税区分</div>
-          <div class="detail-value" id="detailTax">外税（標準税率）</div>
-        </div>
+  <!-- 商品データ -->
+  <div class="detail-section">
+    <h3>商品データ</h3>
+    <div class="detail-row">
+      <div class="detail-label">登録経路</div>
+      <div class="detail-value" id="dataRoute">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">発注先</div>
+      <div class="detail-value" id="dataSupplier">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">商品名</div>
+      <div class="detail-value" id="dataName">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">商品コード</div>
+      <div class="detail-value" id="dataCode">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">棚卸ステータス</div>
+      <div class="detail-value" id="dataStatus">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">単位</div>
+      <div class="detail-value" id="dataUnit">-</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">税区分</div>
+      <div class="detail-value" id="dataTax">-</div>
+    </div>
+  </div>
+
+  <!-- 棚卸し参考データ -->
+  <div class="detail-section">
+    <h3>棚卸し参考データ</h3>
+    <div class="detail-row">
+      <div class="detail-label">棚卸し推奨単価</div>
+      <div class="detail-value">
+        <span id="dataPrice">0円</span>
+        <span class="sub">直近の棚卸データ（2026年2月28日）での単価です。</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 棚卸し参考データ -->
-      <div class="detail-section">
-        <h3>棚卸し参考データ</h3>
-        <div class="detail-row">
-          <div class="detail-label">棚卸し推奨単価</div>
-          <div class="detail-value">
-            <span id="detailPrice">320円</span>
-            <span class="sub">直近の棚卸データ（2026年2月28日）での単価です。</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 棚卸し履歴 & 納品書書き起こし履歴 -->
-      <div class="detail-columns">
-        <div class="detail-section">
-          <h3>棚卸し履歴</h3>
-          <table class="history-table">
-            <thead>
-              <tr>
-                <th>実施日</th>
-                <th>在庫数量</th>
-                <th>商品単価</th>
-                <th>小計</th>
-              </tr>
-            </thead>
-            <tbody id="detailInventoryHistory">
-              <tr>
-                <td>2026-02-28</td>
-                <td>3.0</td>
-                <td>320円</td>
-                <td>960円</td>
-              </tr>
-              <tr>
-                <td>2026-01-31</td>
-                <td>5.0</td>
-                <td>310円</td>
-                <td>1,550円</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="detail-section">
-          <h3>納品書の書き起こし履歴</h3>
-          <table class="history-table">
-            <thead>
-              <tr>
-                <th>納品日</th>
-                <th>数量</th>
-                <th>納品単価</th>
-                <th>小計（税別）</th>
-              </tr>
-            </thead>
-            <tbody id="detailDeliveryHistory">
-              <tr>
-                <td>2026-02-25</td>
-                <td>10</td>
-                <td>300円</td>
-                <td>3,000円</td>
-              </tr>
-              <tr>
-                <td>2026-02-10</td>
-                <td>8</td>
-                <td>310円</td>
-                <td>2,480円</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+  <!-- 棚卸し履歴 & 納品書書き起こし履歴 -->
+  <div class="detail-columns">
+    <div class="detail-section">
+      <h3>棚卸し履歴</h3>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>実施日</th>
+            <th>在庫数量</th>
+            <th>商品単価</th>
+            <th>小計</th>
+          </tr>
+        </thead>
+        <tbody id="dataInventoryHistory">
+          <tr><td>2026-02-28</td><td>3.0</td><td>320円</td><td>960円</td></tr>
+          <tr><td>2026-01-31</td><td>5.0</td><td>310円</td><td>1,550円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="detail-section">
+      <h3>納品書の書き起こし履歴</h3>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>納品日</th>
+            <th>数量</th>
+            <th>納品単価</th>
+            <th>小計（税別）</th>
+          </tr>
+        </thead>
+        <tbody id="dataDeliveryHistory">
+          <tr><td>2026-02-25</td><td>10</td><td>300円</td><td>3,000円</td></tr>
+          <tr><td>2026-02-10</td><td>8</td><td>310円</td><td>2,480円</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 
+<!-- ========================================== -->
+<!-- PAGE 3: 編集画面（フォーム）                   -->
+<!-- ========================================== -->
+<div class="page hidden" id="editPage">
+  <a class="back-link" onclick="showPage('list')">&#8592; 棚卸商品管理に戻る</a>
+  <div class="detail-page-header">
+    <h1 class="detail-page-title" id="editPageTitle">商品名</h1>
+    <div class="breadcrumb">
+      <a href="#" onclick="showPage('list')">棚卸管理</a> ＞
+      <a href="#" onclick="showPage('list')">棚卸商品管理</a> ＞
+      <span id="editBreadcrumbName">商品名</span>
+    </div>
+  </div>
+
+  <div class="edit-section">
+    <div class="edit-row">
+      <div class="edit-label">登録経路</div>
+      <div class="edit-input">
+        <input type="text" id="editRoute" disabled>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">発注先</div>
+      <div class="edit-input">
+        <input type="text" id="editSupplier" disabled>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">商品名</div>
+      <div class="edit-input">
+        <input type="text" id="editName" disabled>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">商品コード</div>
+      <div class="edit-input">
+        <input type="text" id="editCode" disabled>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">
+        棚卸ステータス<span class="required">（必須）</span>
+      </div>
+      <div class="edit-input">
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" id="editToggle" checked onchange="updateEditToggleText()">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-status-text on" id="editToggleText">表示</span>
+        </div>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">
+        単位<span class="required">（必須）</span>
+      </div>
+      <div class="edit-input">
+        <select id="editUnit">
+          <option value="個">個</option>
+          <option value="パック">パック</option>
+          <option value="本">本</option>
+          <option value="箱">箱</option>
+          <option value="樽">樽</option>
+          <option value="kg">kg</option>
+          <option value="g">g</option>
+          <option value="L">L</option>
+          <option value="ml">ml</option>
+        </select>
+      </div>
+    </div>
+    <div class="edit-row">
+      <div class="edit-label">
+        税区分<span class="required">（必須）</span>
+      </div>
+      <div class="edit-input">
+        <select id="editTax">
+          <option value="外税（標準税率）">外税（標準税率）</option>
+          <option value="外税（軽減税率）">外税（軽減税率）</option>
+          <option value="内税（標準税率）">内税（標準税率）</option>
+          <option value="内税（軽減税率）">内税（軽減税率）</option>
+          <option value="非課税">非課税</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="edit-footer">
+    <button class="btn-delete" onclick="if(confirm('この商品を棚卸対象から削除しますか？')){showPage('list')}">削除する</button>
+    <button class="btn-update" onclick="saveEdit()">更新する</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
 // ===== Mock Data =====
 const products = [
-  { id: 1,  name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 2,  name: '（自社加工品）[キッチン冷蔵庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 3,  name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 4800 },
-  { id: 4,  name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 680 },
-  { id: 5,  name: '（自社加工品）[炉端]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 6,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 3200 },
-  { id: 7,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 1800 },
-  { id: 8,  name: '（自社加工品）[調味料]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 9,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'order', supplier: 'カクヤス', inventoryOn: true, unit: '樽', price: 12000 },
-  { id: 10, name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', price: 2800 },
-  { id: 11, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', price: 1200 },
-  { id: 12, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', price: 850 },
-  { id: 13, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', price: 3400 },
-  { id: 14, name: '（自社加工品）[4面冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', price: 0 },
-  { id: 15, name: '鶏もも肉 2kg', code: 'MET-003', route: 'order', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', price: 1600 },
-  { id: 16, name: '豚バラ肉 1kg', code: 'MET-007', route: 'delivery', supplier: '-', inventoryOn: false, unit: 'パック', price: 1200 },
-  { id: 17, name: '（自社加工品）[キッチン冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 18, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', price: 250 },
-  { id: 19, name: '（自社加工品）[B2倉庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 20, name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', price: 2200 },
-  { id: 21, name: '（自社加工品）[刺身場]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', price: 0 },
-  { id: 22, name: 'にんじん 5kg', code: 'VEG-022', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', price: 900 },
-  { id: 23, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: '個', price: 580 },
-  { id: 24, name: '（自社加工品）[いまでや]_[飲料]_[202601]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', price: 0 },
+  { id: 1,  name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 2,  name: '（自社加工品）[キッチン冷蔵庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 3,  name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
+  { id: 4,  name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 680 },
+  { id: 5,  name: '（自社加工品）[炉端]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 6,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 3200 },
+  { id: 7,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 1800 },
+  { id: 8,  name: '（自社加工品）[調味料]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 9,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'order', supplier: 'カクヤス', inventoryOn: true, unit: '樽', tax: '外税（標準税率）', price: 12000 },
+  { id: 10, name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2800 },
+  { id: 11, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 1200 },
+  { id: 12, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 850 },
+  { id: 13, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
+  { id: 14, name: '（自社加工品）[4面冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 15, name: '鶏もも肉 2kg', code: 'MET-003', route: 'order', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 1600 },
+  { id: 16, name: '豚バラ肉 1kg', code: 'MET-007', route: 'delivery', supplier: '-', inventoryOn: false, unit: 'パック', tax: '外税（軽減税率）', price: 1200 },
+  { id: 17, name: '（自社加工品）[キッチン冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 18, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', tax: '外税（標準税率）', price: 250 },
+  { id: 19, name: '（自社加工品）[B2倉庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 20, name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2200 },
+  { id: 21, name: '（自社加工品）[刺身場]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 22, name: 'にんじん 5kg', code: 'VEG-022', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 900 },
+  { id: 23, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: '個', tax: '外税（軽減税率）', price: 580 },
+  { id: 24, name: '（自社加工品）[いまでや]_[飲料]_[202601]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', tax: '外税（標準税率）', price: 0 },
 ];
 
 const routeLabels = {
@@ -956,7 +1067,20 @@ const routeLabels = {
 };
 
 let selectedIds = new Set();
+let currentProductId = null;
 
+// ===== Page Navigation =====
+function showPage(page, id) {
+  document.getElementById('listPage').classList.toggle('hidden', page !== 'list');
+  document.getElementById('dataPage').classList.toggle('hidden', page !== 'data');
+  document.getElementById('editPage').classList.toggle('hidden', page !== 'edit');
+  window.scrollTo(0, 0);
+
+  if (page === 'data' && id) openDataPage(id);
+  if (page === 'edit' && id) openEditPage(id);
+}
+
+// ===== List Page =====
 function renderTable() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const routeFilter = document.getElementById('routeFilter').value;
@@ -972,14 +1096,14 @@ function renderTable() {
 
   const tbody = document.getElementById('productTableBody');
   tbody.innerHTML = filtered.map(p => `
-    <tr onclick="openDetail(${p.id})">
+    <tr onclick="showPage('data',${p.id})">
       <td class="checkbox-cell" onclick="event.stopPropagation()">
         <div class="custom-checkbox ${selectedIds.has(p.id) ? 'checked' : ''}"
              onclick="toggleSelect(${p.id}, this)"></div>
       </td>
       <td><span class="drag-handle">:::</span></td>
       <td class="product-name">${p.name}</td>
-      <td class="product-code">${p.code || '-'}</td>
+      <td style="color:#999;font-size:12px;">${p.code || '-'}</td>
       <td><span class="route-badge ${p.route}">${routeLabels[p.route]}</span></td>
       <td style="font-size:12px;color:#666;">${p.supplier}</td>
       <td><span class="status-badge ${p.inventoryOn ? 'on' : 'off'}">${p.inventoryOn ? '表示' : '非表示'}</span></td>
@@ -987,19 +1111,18 @@ function renderTable() {
       <td style="color:#666;">${p.price > 0 ? p.price.toLocaleString() + '円' : '-'}</td>
       <td>
         <div class="actions-cell" onclick="event.stopPropagation()">
-          <a class="action-btn data" href="#" onclick="openDetail(${p.id});return false;">詳細</a>
+          <a class="action-btn data" href="#" onclick="showPage('data',${p.id});return false;">データ</a>
+          <a class="action-btn edit" href="#" onclick="showPage('edit',${p.id});return false;">編集</a>
         </div>
       </td>
     </tr>
   `).join('');
 
-  // Update counts
   const onCount = products.filter(p => p.inventoryOn).length;
   const offCount = products.filter(p => !p.inventoryOn).length;
   document.getElementById('totalCount').textContent = products.length;
   document.getElementById('onCount').textContent = onCount;
   document.getElementById('offCount').textContent = offCount;
-
   updateBulkBar();
 }
 
@@ -1031,9 +1154,8 @@ function toggleSelectAll() {
 
 function updateBulkBar() {
   const bar = document.getElementById('bulkBar');
-  const count = selectedIds.size;
-  document.getElementById('selectedCount').textContent = count;
-  bar.classList.toggle('show', count > 0);
+  document.getElementById('selectedCount').textContent = selectedIds.size;
+  bar.classList.toggle('show', selectedIds.size > 0);
 }
 
 function bulkSetStatus(on) {
@@ -1044,50 +1166,73 @@ function bulkSetStatus(on) {
   selectedIds.clear();
   document.getElementById('selectAll').classList.remove('checked');
   renderTable();
+  showToast(`${on ? '表示' : '非表示'}に変更しました`);
 }
 
-function openDetail(id) {
+// ===== Data Page (閲覧) =====
+function openDataPage(id) {
   const p = products.find(pp => pp.id === id);
   if (!p) return;
-  document.getElementById('detailTitle').textContent = '棚卸商品データ';
-  document.getElementById('detailBreadcrumb').textContent = `棚卸管理 ＞ 棚卸商品管理 ＞ ${p.name}`;
-  document.getElementById('detailName').textContent = p.name;
-  document.getElementById('detailCode').textContent = p.code || '-';
-  document.getElementById('detailRoute').innerHTML = `<span class="route-badge ${p.route}">${routeLabels[p.route]}</span>`;
-  document.getElementById('detailSupplier').textContent = p.supplier;
-  document.getElementById('detailToggle').checked = p.inventoryOn;
-  updateToggleLabel();
-  document.getElementById('detailUnit').textContent = p.unit;
-  document.getElementById('detailPrice').textContent = p.price > 0 ? p.price.toLocaleString() + '円' : '0円';
-  document.getElementById('detailOverlay').classList.add('open');
+  currentProductId = id;
+
+  document.getElementById('dataBreadcrumbName').textContent = p.name;
+  document.getElementById('dataRoute').innerHTML = `<span class="route-badge ${p.route}">${routeLabels[p.route]}</span>`;
+  document.getElementById('dataSupplier').textContent = p.supplier;
+  document.getElementById('dataName').textContent = p.name;
+  document.getElementById('dataCode').textContent = p.code || '-';
+  document.getElementById('dataStatus').textContent = p.inventoryOn ? '表示' : '非表示';
+  document.getElementById('dataUnit').textContent = p.unit;
+  document.getElementById('dataTax').textContent = p.tax;
+  document.getElementById('dataPrice').textContent = p.price > 0 ? p.price.toLocaleString() + '円' : '0円';
 }
 
-function updateToggleLabel() {
-  const checked = document.getElementById('detailToggle').checked;
-  const label = document.getElementById('detailToggleLabel');
-  const desc = document.getElementById('detailToggleDesc');
-  label.textContent = checked ? '棚卸対象' : '棚卸対象外';
-  label.className = 'toggle-label ' + (checked ? 'on' : 'off');
-  desc.textContent = checked
-    ? 'この商品は棚卸アプリに表示されます'
-    : 'この商品は棚卸アプリに表示されません';
+// ===== Edit Page (編集) =====
+function openEditPage(id) {
+  const p = products.find(pp => pp.id === id);
+  if (!p) return;
+  currentProductId = id;
+
+  document.getElementById('editPageTitle').textContent = p.name;
+  document.getElementById('editBreadcrumbName').textContent = p.name;
+  document.getElementById('editRoute').value = routeLabels[p.route];
+  document.getElementById('editSupplier').value = p.supplier;
+  document.getElementById('editName').value = p.name;
+  document.getElementById('editCode').value = p.code || '';
+  document.getElementById('editToggle').checked = p.inventoryOn;
+  updateEditToggleText();
+  document.getElementById('editUnit').value = p.unit;
+  document.getElementById('editTax').value = p.tax;
 }
 
-function closeDetail(event) {
-  if (event && event.target !== document.getElementById('detailOverlay')) return;
-  document.getElementById('detailOverlay').classList.remove('open');
+function updateEditToggleText() {
+  const checked = document.getElementById('editToggle').checked;
+  const text = document.getElementById('editToggleText');
+  text.textContent = checked ? '表示' : '非表示';
+  text.className = 'toggle-status-text ' + (checked ? 'on' : 'off');
 }
-// Also allow no-argument close
-const origClose = closeDetail;
-closeDetail = function(event) {
-  if (!event) {
-    document.getElementById('detailOverlay').classList.remove('open');
-    return;
-  }
-  origClose(event);
-};
 
-// Event listeners
+function saveEdit() {
+  const p = products.find(pp => pp.id === currentProductId);
+  if (!p) return;
+
+  p.inventoryOn = document.getElementById('editToggle').checked;
+  p.unit = document.getElementById('editUnit').value;
+  p.tax = document.getElementById('editTax').value;
+
+  renderTable();
+  showPage('list');
+  showToast('更新しました');
+}
+
+// ===== Toast =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== Event Listeners =====
 document.getElementById('searchInput').addEventListener('input', renderTable);
 document.getElementById('routeFilter').addEventListener('change', renderTable);
 document.querySelectorAll('input[name="inventoryStatus"]').forEach(r => {
