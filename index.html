@@ -987,8 +987,7 @@ function renderTable() {
       <td style="color:#666;">${p.price > 0 ? p.price.toLocaleString() + '円' : '-'}</td>
       <td>
         <div class="actions-cell" onclick="event.stopPropagation()">
-          <a class="action-btn data" href="#" onclick="openDetail(${p.id});return false;">データ</a>
-          <a class="action-btn edit" href="#" onclick="return false;">編集</a>
+          <a class="action-btn data" href="#" onclick="openDetail(${p.id});return false;">詳細</a>
         </div>
       </td>
     </tr>
