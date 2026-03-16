@@ -521,6 +521,33 @@
     left: 23px;
   }
 
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .toggle-label.on {
+    color: #1db373;
+    background: #e0f7ee;
+  }
+  .toggle-label.off {
+    color: #e53935;
+    background: #ffeaea;
+  }
+  .toggle-description {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
   /* Bulk action bar */
   .bulk-bar {
     display: none;
@@ -799,10 +826,14 @@
         <div class="detail-row">
           <div class="detail-label">棚卸ステータス</div>
           <div class="detail-value">
-            <label class="toggle">
-              <input type="checkbox" id="detailToggle" checked>
-              <span class="toggle-slider"></span>
-            </label>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="detailToggle" checked onchange="updateToggleLabel()">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label on" id="detailToggleLabel">棚卸対象</span>
+            </div>
+            <span class="toggle-description" id="detailToggleDesc">この商品は棚卸アプリに表示されます</span>
           </div>
         </div>
         <div class="detail-row">
@@ -1026,9 +1057,21 @@ function openDetail(id) {
   document.getElementById('detailRoute').innerHTML = `<span class="route-badge ${p.route}">${routeLabels[p.route]}</span>`;
   document.getElementById('detailSupplier').textContent = p.supplier;
   document.getElementById('detailToggle').checked = p.inventoryOn;
+  updateToggleLabel();
   document.getElementById('detailUnit').textContent = p.unit;
   document.getElementById('detailPrice').textContent = p.price > 0 ? p.price.toLocaleString() + '円' : '0円';
   document.getElementById('detailOverlay').classList.add('open');
+}
+
+function updateToggleLabel() {
+  const checked = document.getElementById('detailToggle').checked;
+  const label = document.getElementById('detailToggleLabel');
+  const desc = document.getElementById('detailToggleDesc');
+  label.textContent = checked ? '棚卸対象' : '棚卸対象外';
+  label.className = 'toggle-label ' + (checked ? 'on' : 'off');
+  desc.textContent = checked
+    ? 'この商品は棚卸アプリに表示されます'
+    : 'この商品は棚卸アプリに表示されません';
 }
 
 function closeDetail(event) {
