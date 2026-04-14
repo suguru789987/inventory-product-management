@@ -1169,7 +1169,7 @@
 
 <script>
 // ===== Mock Data =====
-// 実データ比率に合わせた分布: インフォマート45% / 書き起こし・手入力53%（FAX含む） / 発注アプリ2% / 自社加工品0.1%
+// 実データ比率に合わせた分布: インフォマート連携45% / 納品書書き起こし53%（FAX発注からの書き起こし含む） / 発注アプリ連携2% / 自社加工品0.1%
 const products = [
   // インフォマート連携: 11件（最多）
   { id: 1,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'informart', supplier: 'カクヤス', inventoryOn: true, unit: '樽', tax: '外税（標準税率）', price: 12000 },
@@ -1184,7 +1184,7 @@ const products = [
   { id: 10, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'informart', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 1200 },
   { id: 11, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'informart', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 850 },
 
-  // 書き起こし・手入力: 8件（発注先は実在の取引先名）
+  // 納品書書き起こし: 11件（発注先は実在の取引先名。FAX発注からの書き起こし含む）
   { id: 12, name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
   { id: 13, name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 680 },
   { id: 14, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
@@ -1198,7 +1198,7 @@ const products = [
   { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'delivery', supplier: '近江鶏農場', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
   { id: 22, name: '季節の野菜セット', code: '', route: 'delivery', supplier: '産直便', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
 
-  // 発注アプリ: 1件
+  // 発注アプリ連携: 1件
   { id: 23, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', tax: '外税（標準税率）', price: 250 },
 
   // 自社加工品: 1件
