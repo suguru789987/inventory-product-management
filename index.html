@@ -266,10 +266,6 @@
     background: #fff3e0;
     color: #e65100;
   }
-  .route-badge.fax {
-    background: #f3e5f5;
-    color: #6a1b9a;
-  }
   .route-badge.order {
     background: #e8f5e9;
     color: #2e7d32;
@@ -810,7 +806,6 @@
             <option value="all">すべて</option>
             <option value="informart">インフォマート連携</option>
             <option value="delivery">書き起こし・手入力</option>
-            <option value="fax">FAX発注</option>
             <option value="order">発注アプリ</option>
             <option value="in-house">自社加工品</option>
           </select>
@@ -1174,7 +1169,7 @@
 
 <script>
 // ===== Mock Data =====
-// 実データ比率に合わせた分布: インフォマート45% / 書き起こし37% / FAX16% / 発注アプリ2% / 自社加工品0.1%
+// 実データ比率に合わせた分布: インフォマート45% / 書き起こし・手入力53%（FAX含む） / 発注アプリ2% / 自社加工品0.1%
 const products = [
   // インフォマート連携: 11件（最多）
   { id: 1,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'informart', supplier: 'カクヤス', inventoryOn: true, unit: '樽', tax: '外税（標準税率）', price: 12000 },
@@ -1199,10 +1194,9 @@ const products = [
   { id: 18, name: '有機トマト 3kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 1600 },
   { id: 19, name: '国産レモン 5kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
 
-  // FAX発注: 3件
-  { id: 20, name: '地酒 季節限定セット', code: '', route: 'fax', supplier: '地酒蔵元', inventoryOn: true, unit: '本', tax: '外税（標準税率）', price: 5600 },
-  { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'fax', supplier: '近江鶏農場', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
-  { id: 22, name: '季節の野菜セット', code: '', route: 'fax', supplier: '産直便', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
+  { id: 20, name: '地酒 季節限定セット', code: '', route: 'delivery', supplier: '地酒蔵元', inventoryOn: true, unit: '本', tax: '外税（標準税率）', price: 5600 },
+  { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'delivery', supplier: '近江鶏農場', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
+  { id: 22, name: '季節の野菜セット', code: '', route: 'delivery', supplier: '産直便', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
 
   // 発注アプリ: 1件
   { id: 23, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', tax: '外税（標準税率）', price: 250 },
@@ -1214,7 +1208,6 @@ const products = [
 const routeLabels = {
   'informart': 'インフォマート連携',
   'delivery': '書き起こし・手入力',
-  'fax': 'FAX発注',
   'order': '発注アプリ',
   'in-house': '自社加工品'
 };
