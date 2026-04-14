@@ -258,17 +258,25 @@
     font-weight: 600;
     white-space: nowrap;
   }
-  .route-badge.order {
-    background: #e8f5e9;
-    color: #2e7d32;
+  .route-badge.informart {
+    background: #e0f2f1;
+    color: #00695c;
   }
   .route-badge.delivery {
     background: #fff3e0;
     color: #e65100;
   }
+  .route-badge.fax {
+    background: #f3e5f5;
+    color: #6a1b9a;
+  }
+  .route-badge.order {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
   .route-badge.in-house {
-    background: #e3f2fd;
-    color: #1565c0;
+    background: #eceff1;
+    color: #455a64;
   }
 
   /* Status badge */
@@ -800,8 +808,10 @@
           <label>登録経路：</label>
           <select class="filter-select" id="routeFilter">
             <option value="all">すべて</option>
+            <option value="informart">インフォマート連携</option>
+            <option value="delivery">書き起こし・手入力</option>
+            <option value="fax">FAX発注</option>
             <option value="order">発注アプリ</option>
-            <option value="delivery">納品書書き起こし</option>
             <option value="in-house">自社加工品</option>
           </select>
         </div>
@@ -1164,36 +1174,48 @@
 
 <script>
 // ===== Mock Data =====
+// 実データ比率に合わせた分布: インフォマート45% / 書き起こし37% / FAX16% / 発注アプリ2% / 自社加工品0.1%
 const products = [
-  { id: 1,  name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 2,  name: '（自社加工品）[キッチン冷蔵庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 3,  name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
-  { id: 4,  name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 680 },
-  { id: 5,  name: '（自社加工品）[炉端]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 6,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 3200 },
-  { id: 7,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 1800 },
-  { id: 8,  name: '（自社加工品）[調味料]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 9,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'order', supplier: 'カクヤス', inventoryOn: true, unit: '樽', tax: '外税（標準税率）', price: 12000 },
-  { id: 10, name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2800 },
-  { id: 11, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 1200 },
-  { id: 12, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'order', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 850 },
-  { id: 13, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
-  { id: 14, name: '（自社加工品）[4面冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 15, name: '鶏もも肉 2kg', code: 'MET-003', route: 'order', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 1600 },
-  { id: 16, name: '豚バラ肉 1kg', code: 'MET-007', route: 'delivery', supplier: '-', inventoryOn: false, unit: 'パック', tax: '外税（軽減税率）', price: 1200 },
-  { id: 17, name: '（自社加工品）[キッチン冷凍庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 18, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', tax: '外税（標準税率）', price: 250 },
-  { id: 19, name: '（自社加工品）[B2倉庫]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 20, name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'delivery', supplier: '-', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2200 },
-  { id: 21, name: '（自社加工品）[刺身場]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
-  { id: 22, name: 'にんじん 5kg', code: 'VEG-022', route: 'order', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 900 },
-  { id: 23, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '-', inventoryOn: true, unit: '個', tax: '外税（軽減税率）', price: 580 },
-  { id: 24, name: '（自社加工品）[いまでや]_[飲料]_[202601]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: false, unit: '個', tax: '外税（標準税率）', price: 0 },
+  // インフォマート連携: 11件（最多）
+  { id: 1,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'informart', supplier: 'カクヤス', inventoryOn: true, unit: '樽', tax: '外税（標準税率）', price: 12000 },
+  { id: 2,  name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'informart', supplier: 'カクヤス', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2800 },
+  { id: 3,  name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'informart', supplier: 'カクヤス', inventoryOn: false, unit: '本', tax: '外税（標準税率）', price: 2200 },
+  { id: 4,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'informart', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 3200 },
+  { id: 5,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'informart', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 1800 },
+  { id: 6,  name: 'にんじん 5kg', code: 'VEG-022', route: 'informart', supplier: '丸山青果', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 900 },
+  { id: 7,  name: '鶏もも肉 2kg', code: 'MET-003', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 1600 },
+  { id: 8,  name: '豚バラ肉 1kg', code: 'MET-007', route: 'informart', supplier: 'ドリ場食材', inventoryOn: false, unit: 'パック', tax: '外税（軽減税率）', price: 1200 },
+  { id: 9,  name: '牛切り落とし 1kg', code: 'MET-018', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 2400 },
+  { id: 10, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'informart', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 1200 },
+  { id: 11, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'informart', supplier: 'いまでや', inventoryOn: true, unit: '本', tax: '外税（軽減税率）', price: 850 },
+
+  // 書き起こし・手入力: 8件（発注先は実在の取引先名）
+  { id: 12, name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
+  { id: 13, name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 680 },
+  { id: 14, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '沼田商事', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
+  { id: 15, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, unit: '個', tax: '外税（軽減税率）', price: 580 },
+  { id: 16, name: '塩麹 500g', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, unit: '個', tax: '外税（軽減税率）', price: 450 },
+  { id: 17, name: '業務用マヨネーズ 2kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, unit: '個', tax: '外税（軽減税率）', price: 980 },
+  { id: 18, name: '有機トマト 3kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: true, unit: '箱', tax: '外税（軽減税率）', price: 1600 },
+  { id: 19, name: '国産レモン 5kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
+
+  // FAX発注: 3件
+  { id: 20, name: '地酒 季節限定セット', code: '', route: 'fax', supplier: '地酒蔵元', inventoryOn: true, unit: '本', tax: '外税（標準税率）', price: 5600 },
+  { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'fax', supplier: '近江鶏農場', inventoryOn: true, unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
+  { id: 22, name: '季節の野菜セット', code: '', route: 'fax', supplier: '産直便', inventoryOn: false, unit: '箱', tax: '外税（軽減税率）', price: 2400 },
+
+  // 発注アプリ: 1件
+  { id: 23, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, unit: 'パック', tax: '外税（標準税率）', price: 250 },
+
+  // 自社加工品: 1件
+  { id: 24, name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, unit: '個', tax: '外税（標準税率）', price: 0 },
 ];
 
 const routeLabels = {
+  'informart': 'インフォマート連携',
+  'delivery': '書き起こし・手入力',
+  'fax': 'FAX発注',
   'order': '発注アプリ',
-  'delivery': '納品書書き起こし',
   'in-house': '自社加工品'
 };
 
