@@ -275,26 +275,13 @@
     color: #455a64;
   }
 
-  /* Status badge */
+  /* Status text (現実装に合わせてプレーン色付きテキスト) */
   .status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 12px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    min-width: 48px;
-    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
   }
-  .status-badge.on {
-    background: #e0f7ee;
-    color: #1db373;
-  }
-  .status-badge.off {
-    background: #f5f5f5;
-    color: #999;
-  }
+  .status-badge.on { color: #1db373; }
+  .status-badge.off { color: #999; }
 
   /* Action buttons */
   .action-btn {
@@ -863,7 +850,6 @@
             <th></th>
             <th>商品名</th>
             <th>商品コード</th>
-            <th>登録経路</th>
             <th>発注先</th>
             <th>棚卸</th>
             <th>単位</th>
@@ -1252,7 +1238,6 @@ function renderTable() {
       <td><span class="drag-handle">:::</span></td>
       <td class="product-name">${p.name}</td>
       <td style="color:#999;font-size:12px;">${p.code || '-'}</td>
-      <td><span class="route-badge ${p.route}">${routeLabels[p.route]}</span></td>
       <td style="font-size:12px;color:#666;">${p.supplier}</td>
       <td><span class="status-badge ${p.inventoryOn ? 'on' : 'off'}">${p.inventoryOn ? '表示' : '非表示'}</span></td>
       <td style="color:#666;">${p.unit}</td>
