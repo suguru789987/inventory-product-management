@@ -1039,13 +1039,12 @@
         </div>
       </div>
     </div>
-    <div class="edit-row">
+    <div class="edit-row" id="editCategoryRow">
       <div class="edit-label">
         費目<span class="required">（必須）</span>
       </div>
       <div class="edit-input">
         <select id="editCategory"></select>
-        <div id="editCategoryNote" style="font-size:12px;color:#999;margin-top:8px;display:none;">連携・発注商品の費目は自動付与のため編集できません（自社加工品のみ編集可）。</div>
       </div>
     </div>
     <div class="edit-row">
@@ -1388,12 +1387,11 @@ function openEditPage(id) {
   document.getElementById('editToggle').checked = p.inventoryOn;
   updateEditToggleText();
   document.getElementById('editCategory').value = p.category;
-  // ① 費目は自社加工品のみ編集可。連携・発注商品は自動付与のため参照のみ。
-  const editable = (p.route === 'in-house');
-  document.getElementById('editCategory').disabled = !editable;
-  document.getElementById('editCategoryNote').style.display = editable ? 'none' : 'block';
+  // 費目欄は自社加工品の編集時のみ表示（連携・発注商品は非表示。データ画面では参照可）
+  const isInHouse = (p.route === 'in-house');
+  document.getElementById('editCategoryRow').style.display = isInHouse ? '' : 'none';
   // 既登録(AI判定/発注分)を自社加工品に変えたい場合は削除→新規登録を案内
-  document.getElementById('editConvertNote').style.display = editable ? 'none' : 'block';
+  document.getElementById('editConvertNote').style.display = isInHouse ? 'none' : 'block';
   document.getElementById('editUnit').value = p.unit;
   document.getElementById('editTax').value = p.tax;
 }
