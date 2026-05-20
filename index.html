@@ -1140,7 +1140,7 @@
         <select id="addCategory">
           <option value="" disabled selected>選択してください</option>
         </select>
-        <div style="font-size:12px;color:#999;margin-top:8px;">棚卸商品の費目は登録時に選択します（AI推定は行いません）。</div>
+        <div style="font-size:12px;color:#999;margin-top:8px;">費用設定の変動費目から選択します（自社加工品はAI推定せず手動で確定）。</div>
       </div>
     </div>
     <div class="edit-row">
@@ -1197,41 +1197,44 @@
 //   category    … 費目（既存商品はAI推定値、棚卸商品の手動登録時はユーザー選択）
 const products = [
   // インフォマート連携: 11件（最多）／仕入由来のため発注対象ではない（orderOn:false）
-  { id: 1,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'informart', supplier: 'カクヤス', inventoryOn: true, orderOn: false, category: '酒類仕入高', unit: '樽', tax: '外税（標準税率）', price: 12000 },
-  { id: 2,  name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'informart', supplier: 'カクヤス', inventoryOn: false, orderOn: false, category: '酒類仕入高', unit: '本', tax: '外税（標準税率）', price: 2800 },
-  { id: 3,  name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'informart', supplier: 'カクヤス', inventoryOn: false, orderOn: false, category: '酒類仕入高', unit: '本', tax: '外税（標準税率）', price: 2200 },
-  { id: 4,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 3200 },
-  { id: 5,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 1800 },
-  { id: 6,  name: 'にんじん 5kg', code: 'VEG-022', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 900 },
-  { id: 7,  name: '鶏もも肉 2kg', code: 'MET-003', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 1600 },
-  { id: 8,  name: '豚バラ肉 1kg', code: 'MET-007', route: 'informart', supplier: 'ドリ場食材', inventoryOn: false, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 1200 },
-  { id: 9,  name: '牛切り落とし 1kg', code: 'MET-018', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 2400 },
-  { id: 10, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'informart', supplier: 'いまでや', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '本', tax: '外税（軽減税率）', price: 1200 },
-  { id: 11, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'informart', supplier: 'いまでや', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '本', tax: '外税（軽減税率）', price: 850 },
+  { id: 1,  name: '生ビール（樽）20L', code: 'BEV-001', route: 'informart', supplier: 'カクヤス', inventoryOn: true, orderOn: false, category: '酒類費', unit: '樽', tax: '外税（標準税率）', price: 12000 },
+  { id: 2,  name: '日本酒 純米大吟醸 720ml', code: 'BEV-025', route: 'informart', supplier: 'カクヤス', inventoryOn: false, orderOn: false, category: '酒類費', unit: '本', tax: '外税（標準税率）', price: 2800 },
+  { id: 3,  name: 'ワイン（赤）カベルネ 750ml', code: 'BEV-042', route: 'informart', supplier: 'カクヤス', inventoryOn: false, orderOn: false, category: '酒類費', unit: '本', tax: '外税（標準税率）', price: 2200 },
+  { id: 4,  name: '有機野菜セット（大）', code: 'VEG-003', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 3200 },
+  { id: 5,  name: 'じゃがいも（男爵）10kg', code: 'VEG-015', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 1800 },
+  { id: 6,  name: 'にんじん 5kg', code: 'VEG-022', route: 'informart', supplier: '丸山青果', inventoryOn: true, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 900 },
+  { id: 7,  name: '鶏もも肉 2kg', code: 'MET-003', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 1600 },
+  { id: 8,  name: '豚バラ肉 1kg', code: 'MET-007', route: 'informart', supplier: 'ドリ場食材', inventoryOn: false, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 1200 },
+  { id: 9,  name: '牛切り落とし 1kg', code: 'MET-018', route: 'informart', supplier: 'ドリ場食材', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 2400 },
+  { id: 10, name: 'オリーブオイル 1L', code: 'SEA-008', route: 'informart', supplier: 'いまでや', inventoryOn: true, orderOn: false, category: '食材費', unit: '本', tax: '外税（軽減税率）', price: 1200 },
+  { id: 11, name: '醤油（特選）1.8L', code: 'SEA-002', route: 'informart', supplier: 'いまでや', inventoryOn: true, orderOn: false, category: '食材費', unit: '本', tax: '外税（軽減税率）', price: 850 },
 
   // 納品書書き起こし: 11件（発注先は実在の取引先名。FAX発注からの書き起こし含む）／発注先を持たず発注対象ではない（orderOn:false）
-  { id: 12, name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
-  { id: 13, name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 680 },
-  { id: 14, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
-  { id: 15, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '個', tax: '外税（軽減税率）', price: 580 },
-  { id: 16, name: '塩麹 500g', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '個', tax: '外税（軽減税率）', price: 450 },
-  { id: 17, name: '業務用マヨネーズ 2kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '個', tax: '外税（軽減税率）', price: 980 },
-  { id: 18, name: '有機トマト 3kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 1600 },
-  { id: 19, name: '国産レモン 5kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: false, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 2400 },
+  { id: 12, name: '鮮魚盛り合わせ（5人前）', code: 'FSH-001', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 4800 },
+  { id: 13, name: 'サーモン切り身 200g', code: 'FSH-012', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 680 },
+  { id: 14, name: '冷凍エビ（大）1kg', code: '', route: 'delivery', supplier: '沼田商事', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 3400 },
+  { id: 15, name: '味噌（白）1kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材費', unit: '個', tax: '外税（軽減税率）', price: 580 },
+  { id: 16, name: '塩麹 500g', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材費', unit: '個', tax: '外税（軽減税率）', price: 450 },
+  { id: 17, name: '業務用マヨネーズ 2kg', code: '', route: 'delivery', supplier: '山田食品', inventoryOn: true, orderOn: false, category: '食材費', unit: '個', tax: '外税（軽減税率）', price: 980 },
+  { id: 18, name: '有機トマト 3kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: true, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 1600 },
+  { id: 19, name: '国産レモン 5kg', code: '', route: 'delivery', supplier: '青木農園', inventoryOn: false, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 2400 },
 
-  { id: 20, name: '地酒 季節限定セット', code: '', route: 'delivery', supplier: '地酒蔵元', inventoryOn: true, orderOn: false, category: '酒類仕入高', unit: '本', tax: '外税（標準税率）', price: 5600 },
-  { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'delivery', supplier: '近江鶏農場', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
-  { id: 22, name: '季節の野菜セット', code: '', route: 'delivery', supplier: '産直便', inventoryOn: false, orderOn: false, category: '食材仕入高', unit: '箱', tax: '外税（軽減税率）', price: 2400 },
+  { id: 20, name: '地酒 季節限定セット', code: '', route: 'delivery', supplier: '地酒蔵元', inventoryOn: true, orderOn: false, category: '酒類費', unit: '本', tax: '外税（標準税率）', price: 5600 },
+  { id: 21, name: '地鶏モモ肉 2kg', code: '', route: 'delivery', supplier: '近江鶏農場', inventoryOn: true, orderOn: false, category: '食材費', unit: 'パック', tax: '外税（軽減税率）', price: 3200 },
+  { id: 22, name: '季節の野菜セット', code: '', route: 'delivery', supplier: '産直便', inventoryOn: false, orderOn: false, category: '食材費', unit: '箱', tax: '外税（軽減税率）', price: 2400 },
 
   // 発注アプリ連携: 1件／唯一の発注対象（orderOn:true）
   { id: 23, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, orderOn: true, category: '消耗品費', unit: 'パック', tax: '外税（標準税率）', price: 250 },
 
   // 自社加工品: 1件／顧客が棚卸商品として作成（棚卸ON・発注OFF・費目は手動選択）
-  { id: 24, name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, orderOn: false, category: '食材仕入高', unit: '個', tax: '外税（標準税率）', price: 0 },
+  { id: 24, name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, orderOn: false, category: '食材費', unit: '個', tax: '外税（標準税率）', price: 0 },
 ];
 
-// 費目マスタ（※仮ラベル。経営管理の実費目体系に差し替え予定 → docs/90_open_questions.md OQ-11）
-const categoryOptions = ['食材仕入高', '酒類仕入高', 'ドリンク仕入高', '消耗品費', 'その他仕入高'];
+// 費目セレクタの選択肢 = 費用設定で店舗が設定した「変動費目」を引いてくる想定。
+// 本実装では monthly_cost_items（変動費予算の費目）をAPIで動的取得する。
+// 保存先は shop_item_expenditure_types.expenditure_type（要確認: 変動費目参照か固定enumか → OQ-11）。
+// ↓は店舗が費用設定した変動費目の例（実値は店舗ごとに異なる）。
+const categoryOptions = ['食材費', '酒類費', 'ドリンク費', '消耗品費', 'その他変動費'];
 
 const routeLabels = {
   'informart': 'インフォマート連携',
