@@ -1082,6 +1082,10 @@
     </div>
   </div>
 
+  <div id="editConvertNote" style="display:none;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:13px;color:#7a5d00;line-height:1.7;">
+    💡 この商品を<strong>自社加工品に変更したい</strong>場合は、編集での変更はできません。<strong>この商品を削除し、自社加工品として新規登録</strong>してください。
+  </div>
+
   <div class="edit-footer">
     <button class="btn-delete" onclick="if(confirm('この商品を棚卸対象から削除しますか？')){showPage('list')}">削除する</button>
     <button class="btn-update" onclick="saveEdit()">更新する</button>
@@ -1388,6 +1392,8 @@ function openEditPage(id) {
   const editable = (p.route === 'in-house');
   document.getElementById('editCategory').disabled = !editable;
   document.getElementById('editCategoryNote').style.display = editable ? 'none' : 'block';
+  // 既登録(AI判定/発注分)を自社加工品に変えたい場合は削除→新規登録を案内
+  document.getElementById('editConvertNote').style.display = editable ? 'none' : 'block';
   document.getElementById('editUnit').value = p.unit;
   document.getElementById('editTax').value = p.tax;
 }
