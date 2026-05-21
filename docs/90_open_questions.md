@@ -91,12 +91,10 @@
 
 ## OQ-11: 費目セレクタのソースと保存先
 
-- **方針(暫定):** 費目セレクタは**費用設定の「変動費目」を引いてくる**（`monthly_cost_items`）。仕入・食材は変動費のため変動費予算へ実績を積む。モックは変動費目の例を仮値で保持。
+- **方針(確定):** 費目は**固定3区分（食材 / 飲料 / 資材）**とする。棚卸対象は仕入れた商品に限られるため、店舗ごとの変動費目（`monthly_cost_items`）は引かない。モックも `categoryOptions = ['食材','飲料','資材']` に確定済み。
 - **要確認(エンジニア):**
-  - 保存先 `shop_item_expenditure_types.expenditure_type`(int) が `monthly_cost_items`(変動費目) を参照しているか、別の固定enum（FD分類＝食材/飲料/その他 等）か。
-    - (a) 変動費目参照 → この方針のまま実装可能。
-    - (b) 固定enum → 粒度が違うため「費目＝変動費目」とするには対応付け/保存先変更が必要。
-  - `expenditure_type` のenum定義（コード→ラベル対応）。アプリコード側（rakmy_server）にある想定で、本番には触らず提示を依頼。
+  - 保存先 `shop_item_expenditure_types.expenditure_type`(int) のenum定義（コード→ラベル対応）が固定3区分（食材/飲料/資材）と対応付くか。粒度が違う場合は対応表/保存先変更が必要。
+  - `expenditure_type` のenum定義はアプリコード側（rakmy_server）にある想定。本番には触らず提示を依頼。
 - **確認済み:** 商品の二属性は本番に実在（`shop_items.inventory_enabled`=棚卸対象 / `orderable`=発注可能）。AI付与/手動は `is_ai_generated` で区別。本番UIの「カテゴリー」は `vendors.category_id`＝仕入先カテゴリで費目とは別。
 
 ## OQ-12: 既存商品の「発注OFF / 棚卸ON」一括移行（案1）
