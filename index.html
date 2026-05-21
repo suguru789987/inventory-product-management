@@ -701,6 +701,64 @@
     transform: translateX(-50%) translateY(0);
   }
 
+  /* Confirm modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    width: 420px;
+    max-width: calc(100% - 48px);
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+    animation: modal-pop 0.18s ease;
+  }
+  @keyframes modal-pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal-body { padding: 28px 28px 20px; }
+  .modal-title { font-size: 17px; font-weight: 700; color: #333; margin-bottom: 10px; }
+  .modal-text { font-size: 14px; color: #666; line-height: 1.6; }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 28px 24px;
+  }
+  .modal-btn-cancel {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #555;
+    transition: all 0.15s;
+  }
+  .modal-btn-cancel:hover { background: #f5f5f5; }
+  .modal-btn-delete {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: #e53935;
+    color: #fff;
+    transition: all 0.15s;
+  }
+  .modal-btn-delete:hover { background: #c62828; }
+
   /* Add product button */
   .btn-add-product {
     padding: 9px 20px;
@@ -1088,7 +1146,7 @@
 
   <div class="edit-footer">
     <button class="btn-cancel" onclick="showPage('list')">キャンセル</button>
-    <button class="btn-delete" onclick="if(confirm('この商品を棚卸対象から削除しますか？')){showPage('list')}">削除する</button>
+    <button class="btn-delete" onclick="openDeleteModal()">削除する</button>
     <button class="btn-update" onclick="saveEdit()">更新する</button>
   </div>
 </div>
@@ -1194,6 +1252,20 @@
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- ===== Delete Confirm Modal ===== -->
+<div class="modal-overlay" id="deleteModal" onclick="if(event.target===this)closeDeleteModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal-body">
+      <div class="modal-title" id="deleteModalTitle">商品を削除しますか？</div>
+      <div class="modal-text">「<span id="deleteModalName"></span>」を棚卸対象から削除します。この操作は取り消せません。</div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn-cancel" onclick="closeDeleteModal()">キャンセル</button>
+      <button class="modal-btn-delete" onclick="confirmDelete()">削除する</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===== Mock Data =====
@@ -1416,6 +1488,22 @@ function saveEdit() {
   renderTable();
   showPage('list');
   showToast('更新しました');
+}
+
+// ===== Delete Confirm Modal =====
+function openDeleteModal() {
+  const p = products.find(pp => pp.id === currentProductId);
+  document.getElementById('deleteModalName').textContent = p ? p.name : '';
+  document.getElementById('deleteModal').classList.add('show');
+}
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('show');
+}
+function confirmDelete() {
+  // モックでは実際の削除は未実装（確認動線のみ）
+  closeDeleteModal();
+  showPage('list');
+  showToast('削除しました');
 }
 
 // ===== Add Page =====
