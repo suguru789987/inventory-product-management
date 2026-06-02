@@ -249,32 +249,6 @@
     max-width: 340px;
   }
 
-  /* Registration route badge */
-  .route-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .route-badge.informart {
-    background: #e0f2f1;
-    color: #00695c;
-  }
-  .route-badge.delivery {
-    background: #fff3e0;
-    color: #e65100;
-  }
-  .route-badge.order {
-    background: #e8f5e9;
-    color: #2e7d32;
-  }
-  .route-badge.in-house {
-    background: #eceff1;
-    color: #455a64;
-  }
-
   /* Status text (現実装に合わせてプレーン色付きテキスト) */
   .status-badge {
     font-size: 13px;
@@ -846,16 +820,6 @@
           <span class="search-icon">🔍</span>
           <input type="text" placeholder="商品名で検索" id="searchInput">
         </div>
-        <div class="filter-group">
-          <label>登録経路：</label>
-          <select class="filter-select" id="routeFilter">
-            <option value="all">すべて</option>
-            <option value="informart">インフォマート連携</option>
-            <option value="delivery">納品書書き起こし</option>
-            <option value="order">発注アプリ連携</option>
-            <option value="in-house">自社加工品</option>
-          </select>
-        </div>
       </div>
       <div class="filters">
         <div class="filter-group">
@@ -949,10 +913,6 @@
   <!-- 商品データ -->
   <div class="detail-section">
     <h3>商品データ</h3>
-    <div class="detail-row">
-      <div class="detail-label">登録経路</div>
-      <div class="detail-value" id="dataRoute">-</div>
-    </div>
     <div class="detail-row">
       <div class="detail-label">発注先</div>
       <div class="detail-value" id="dataSupplier">-</div>
@@ -1054,12 +1014,6 @@
 
   <div class="edit-section">
     <div class="edit-row">
-      <div class="edit-label">登録経路</div>
-      <div class="edit-input">
-        <input type="text" id="editRoute" disabled>
-      </div>
-    </div>
-    <div class="edit-row">
       <div class="edit-label">発注先</div>
       <div class="edit-input">
         <input type="text" id="editSupplier" disabled>
@@ -1103,7 +1057,7 @@
       </div>
       <div class="edit-input">
         <select id="editCategory"></select>
-        <div style="font-size:12px;color:#999;margin-top:8px;">仕入商品の品目区分（食材／飲料／資材）から選択します（自社加工品はAI推定せず手動で確定）。</div>
+        <div style="font-size:12px;color:#999;margin-top:8px;">仕入商品の品目区分（食材／飲料／資材）から選択します（棚卸登録商品はAI推定せず手動で確定）。</div>
       </div>
     </div>
     <div class="edit-row">
@@ -1141,7 +1095,7 @@
   </div>
 
   <div id="editConvertNote" style="display:none;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:13px;color:#7a5d00;line-height:1.7;">
-    💡 この商品を<strong>自社加工品に変更したい</strong>場合は、編集での変更はできません。<strong>この商品を削除し、自社加工品として新規登録</strong>してください。
+    💡 この商品を<strong>棚卸登録商品に変更したい</strong>場合は、編集での変更はできません。<strong>この商品を削除し、棚卸登録商品として新規登録</strong>してください。
   </div>
 
   <div class="edit-footer">
@@ -1205,7 +1159,7 @@
         <select id="addCategory">
           <option value="" disabled selected>選択してください</option>
         </select>
-        <div style="font-size:12px;color:#999;margin-top:8px;">仕入商品の品目区分（食材／飲料／資材）から選択します（自社加工品はAI推定せず手動で確定）。</div>
+        <div style="font-size:12px;color:#999;margin-top:8px;">仕入商品の品目区分（食材／飲料／資材）から選択します（棚卸登録商品はAI推定せず手動で確定）。</div>
       </div>
     </div>
     <div class="edit-row">
@@ -1269,7 +1223,7 @@
 
 <script>
 // ===== Mock Data =====
-// 実データ比率に合わせた分布: インフォマート連携45% / 納品書書き起こし53%（FAX発注からの書き起こし含む） / 発注アプリ連携2% / 自社加工品0.1%
+// 実データ比率に合わせた分布: インフォマート連携45% / 納品書書き起こし53%（FAX発注からの書き起こし含む） / 発注アプリ連携2% / 棚卸登録商品0.1%
 // 属性メモ:
 //   inventoryOn … 棚卸対象か（このページで操作する）
 //   orderOn     … 発注対象か（発注アプリ由来のみ true。このページでは参照のみ）
@@ -1305,20 +1259,13 @@ const products = [
   // 発注アプリ連携: 1件／唯一の発注対象（orderOn:true）
   { id: 23, name: '紙ナプキン（100枚入）', code: 'SUP-001', route: 'order', supplier: 'アスクル', inventoryOn: false, orderOn: true, category: '資材', unit: 'パック', tax: '外税（標準税率）', price: 250 },
 
-  // 自社加工品: 1件／顧客が棚卸商品として作成（棚卸ON・発注OFF・費目は手動選択）
-  { id: 24, name: '（自社加工品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（自社加工品）', inventoryOn: true, orderOn: false, category: '食材', unit: '個', tax: '外税（標準税率）', price: 0 },
+  // 棚卸登録商品 (内部 route='in-house'): 1件／顧客が棚卸商品として作成（棚卸ON・発注OFF・費目は手動選択）
+  { id: 24, name: '（棚卸登録商品）[ランチ干物]_[食材]_[202602]_1', code: '', route: 'in-house', supplier: '（棚卸登録商品）', inventoryOn: true, orderOn: false, category: '食材', unit: '個', tax: '外税（標準税率）', price: 0 },
 ];
 
 // 費目セレクタの選択肢 = 棚卸対象は仕入れた商品に限られるため、品目区分は固定3択。
 // 食材 / 飲料 / 資材 のみ（店舗ごとの変動費目は引かず固定enumとする → OQ-11）。
 const categoryOptions = ['食材', '飲料', '資材'];
-
-const routeLabels = {
-  'informart': 'インフォマート連携',
-  'delivery': '納品書書き起こし',
-  'order': '発注アプリ連携',
-  'in-house': '自社加工品'
-};
 
 let selectedIds = new Set();
 let currentProductId = null;
@@ -1339,12 +1286,10 @@ function showPage(page, id) {
 // ===== List Page =====
 function renderTable() {
   const search = document.getElementById('searchInput').value.toLowerCase();
-  const routeFilter = document.getElementById('routeFilter').value;
   const statusFilter = document.querySelector('input[name="inventoryStatus"]:checked').value;
 
   let filtered = products.filter(p => {
     if (search && !p.name.toLowerCase().includes(search)) return false;
-    if (routeFilter !== 'all' && p.route !== routeFilter) return false;
     if (statusFilter === 'on' && !p.inventoryOn) return false;
     if (statusFilter === 'off' && p.inventoryOn) return false;
     return true;
@@ -1431,7 +1376,6 @@ function openDataPage(id) {
   currentProductId = id;
 
   document.getElementById('dataBreadcrumbName').textContent = p.name;
-  document.getElementById('dataRoute').innerHTML = `<span class="route-badge ${p.route}">${routeLabels[p.route]}</span>`;
   document.getElementById('dataSupplier').textContent = p.supplier;
   document.getElementById('dataName').textContent = p.name;
   document.getElementById('dataCode').textContent = p.code || '-';
@@ -1451,7 +1395,6 @@ function openEditPage(id) {
 
   document.getElementById('editPageTitle').textContent = p.name;
   document.getElementById('editBreadcrumbName').textContent = p.name;
-  document.getElementById('editRoute').value = routeLabels[p.route];
   document.getElementById('editSupplier').value = p.supplier;
   document.getElementById('editName').value = p.name;
   document.getElementById('editCode').value = p.code || '';
@@ -1459,10 +1402,10 @@ function openEditPage(id) {
   document.getElementById('editToggle').checked = p.inventoryOn;
   updateEditToggleText();
   document.getElementById('editCategory').value = p.category;
-  // 費目欄は自社加工品の編集時のみ表示（連携・発注商品は非表示。データ画面では参照可）
+  // 費目欄は棚卸登録商品の編集時のみ表示（連携・発注商品は非表示。データ画面では参照可）
   const isInHouse = (p.route === 'in-house');
   document.getElementById('editCategoryRow').style.display = isInHouse ? '' : 'none';
-  // 既登録(AI判定/発注分)を自社加工品に変えたい場合は削除→新規登録を案内
+  // 既登録(AI判定/発注分)を棚卸登録商品に変えたい場合は削除→新規登録を案内
   document.getElementById('editConvertNote').style.display = isInHouse ? 'none' : 'block';
   document.getElementById('editUnit').value = p.unit;
   document.getElementById('editTax').value = p.tax;
@@ -1480,7 +1423,7 @@ function saveEdit() {
   if (!p) return;
 
   p.inventoryOn = document.getElementById('editToggle').checked;
-  // 費目は自社加工品のみ更新（連携・発注商品は自動付与を維持）
+  // 費目は棚卸登録商品のみ更新（連携・発注商品は自動付与を維持）
   if (p.route === 'in-house') p.category = document.getElementById('editCategory').value;
   p.unit = document.getElementById('editUnit').value;
   p.tax = document.getElementById('editTax').value;
@@ -1541,7 +1484,7 @@ function addProduct() {
     name: name,
     code: document.getElementById('addCode').value.trim(),
     route: 'in-house',
-    supplier: '（自社加工品）',
+    supplier: '（棚卸登録商品）',
     inventoryOn: document.getElementById('addToggle').checked,
     orderOn: false,
     category: category,
@@ -1576,7 +1519,6 @@ populateCategorySelects();
 
 // ===== Event Listeners =====
 document.getElementById('searchInput').addEventListener('input', renderTable);
-document.getElementById('routeFilter').addEventListener('change', renderTable);
 document.querySelectorAll('input[name="inventoryStatus"]').forEach(r => {
   r.addEventListener('change', renderTable);
 });

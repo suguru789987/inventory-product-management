@@ -35,7 +35,7 @@
 | [03_screen_edit.md](./docs/03_screen_edit.md) | 編集画面の仕様 |
 | [04_screen_add.md](./docs/04_screen_add.md) | 新規追加画面の仕様 |
 | [10_data_model.md](./docs/10_data_model.md) | データモデル(Product/履歴)・enum定義 |
-| [20_business_rules.md](./docs/20_business_rules.md) | 業務ルール(棚卸ステータス/登録経路/単価等) |
+| [20_business_rules.md](./docs/20_business_rules.md) | 業務ルール(棚卸ステータス/登録元の内部分類/単価等) |
 | [90_open_questions.md](./docs/90_open_questions.md) | 未決事項・実装時の論点 |
 
 ---
